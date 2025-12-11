@@ -70,18 +70,12 @@ fn router(stream: &mut TcpStream, db_instance: &mut TodoDb) {
 }
 
 fn main() {
-    println!("Todo - server");
-    let mut todo_db = db::data_base::TodoDb::new();
-    let todo = TodosStruct::new("Complete web server".to_string());
-    todo_db.add_todo(todo);
-    let todo = TodosStruct::new("Implement a library".to_string());
-    todo_db.add_todo(todo);
-
+    // Initializing the TCP listener to listen on port 8000
     let listener = TcpListener::bind("127.0.0.1:8000").unwrap();
-
+    let mut tododb = TodoDb::new();
     for stream in listener.incoming() {
         println!("Connection established!");
         let mut stream = stream.unwrap();
-        router(&mut stream, &mut todo_db);
+        router(&mut stream, &mut tododb);
     }
 }
